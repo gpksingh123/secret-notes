@@ -1,11 +1,18 @@
 const express = require('express')
 const cors = require('cors')
+const bodyParser = require('body-parser')
 const mongoose = require('mongoose') 
 require("dotenv").config()
 
 const app = express()
 app.use(cors())
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 const port = 3001
+
+
+
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
@@ -16,7 +23,11 @@ app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 })
 
-//set up mongoose
+//Set up routes
+app.use("/secrets",require("./routes/secretRoutes"))
+
+
+//Set up mongoose
 console.log("Connecting to MongoDb")
 console.log(process.env.MONGODB_URI)
 mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true}, err => {
